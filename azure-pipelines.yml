@@ -1,19 +1,33 @@
 trigger:
 - main
 
-pool: Default
+pool:
+  vmImage: Default
 
-steps:
-- script: |
-    cd $HOME
-    echo "$PWD"
-    source env/bin/activate
-    az login --use-device-code
-  displayName: Login Azure
-  
-- script: |
-    cd $HOME
-    source env/bin/activate
-    chmod +x $(System.DefaultWorkingDirectory)/new-file.sh
-    $(System.DefaultWorkingDirectory)/new-file.sh $(RESOURCE_GROUP) start
-  displayName: Executing
+jobs:
+- job: AzureLogin
+  displayName: 'Azure Login'
+  steps:
+  - script: |
+      cd $HOME
+      echo "$PWD"
+      source env/bin/activate
+      az login --use-device-code
+    displayName: 'Login to Azure'
+
+- job: PrepareAndExecuteScript
+  displayName: 'Prepare and Execute Shell Script'
+  dependsOn: AzureLogin
+  steps:
+  - script: |
+      cd $HOME
+      source env/bin/activate
+      chmod +x $(System.DefaultWorkingDirectory)/new-file.sh
+    displayName: 'Change Script Permission'
+
+  - task: Bash@3
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(System.DefaultWorkingDirectory)/new-file.sh'
+      arguments: '$(RESOURCE_GROUP) start'
+    displayName: 'Execute Script'
