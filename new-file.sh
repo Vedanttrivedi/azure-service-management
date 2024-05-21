@@ -1,7 +1,7 @@
 #!/bin/bash
 
-resource_group=$1
-action=$2
+resource_group=sa1_test_eic_VedantTrivedi
+action=stop
 
 if [ "$action" != "start" ] && [ "$action" != "stop" ]; then
     echo "Action '$action' is not supported. Please use 'start' or 'stop'.";
