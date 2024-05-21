@@ -7,7 +7,7 @@ steps:
 - script: |
     cd $HOME
     echo "$PWD"
-    source env/bin/activate/
+    source env/bin/activate
     az login
   displayName: Login Azure
 - task: Bash@3
