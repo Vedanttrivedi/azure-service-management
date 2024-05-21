@@ -13,4 +13,5 @@ steps:
 - task: Bash@3
   inputs:
     filePath: '$(System.DefaultWorkingDirectory)/new-file.sh'
+    arguments: $(RESOURCE_GROUP) stop
   displayName: Script
