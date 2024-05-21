@@ -15,5 +15,5 @@ steps:
     cd $HOME
     source env/bin/activate
     chmod +x $(System.DefaultWorkingDirectory)/new-file.sh
-    $(System.DefaultWorkingDirectory)/new-file.sh $(RESOURCE_GROUP) stop
+    $(System.DefaultWorkingDirectory)/new-file.sh $(RESOURCE_GROUP) start
   displayName: Executing
