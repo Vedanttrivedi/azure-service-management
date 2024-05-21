@@ -106,8 +106,10 @@ stream_analytics() {
             if [ "$job_state" = "Idle" ] || [ "$job_state" = "Processing" ] || [ "$job_state" = "Degraded" ] || [ "$job_state" = "Starting" ] || [ "$job_state" = "Restarting" ] || [ "$job_state" = "Scaling" ] || [ "$job_state" = "Running" ]; then
                 update="true"
             fi
-        elif [ "$action" = "start" ]; then
+        else
+        if [ "$job_state" != "Running" ]; then
             update="true"
+         fi
         fi
 
         echo "Update value for $analytics_instance: $update"
