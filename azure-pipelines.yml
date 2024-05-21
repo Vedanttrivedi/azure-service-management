@@ -8,7 +8,7 @@ steps:
     cd $HOME
     echo "$PWD"
     source env/bin/activate
-    az login
+    az login --use-device-code
   displayName: Login Azure
 - task: Bash@3
   inputs:
