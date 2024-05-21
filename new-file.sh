@@ -1,7 +1,12 @@
 #!/bin/bash
 
-resource_group=sa1_test_eic_VedantTrivedi
-action=stop
+resource_group=$1
+args=$2
+action=$(echo "$args" | tr '[:upper:]' '[:lower:]')
+
+
+echo "updated action value $action"
+
 
 if [ "$action" != "start" ] && [ "$action" != "stop" ]; then
     echo "Action '$action' is not supported. Please use 'start' or 'stop'.";
@@ -91,14 +96,14 @@ stream_analytics() {
     for analytics_instance in $stream_analytics; do
         echo "Checking the state of Azure Stream Analytics Job instance: $analytics_instance"
 
-        job_state=$(az stream-analytics job show --resource-group $resource_group --name $analytics_instance  --output tsv | cut -f 25)
+        job_state=$(az stream-analytics job show --resource-group $resource_group --name $analytics_instance  --output tsv | cut -f 15)
         
         echo "Current state of $analytics_instance: $job_state"
         
         update="false"
 
         if [ "$action" = "stop" ]; then
-            if [ "$job_state" = "Idle" ] || [ "$job_state" = "Processing" ] || [ "$job_state" = "Degraded" ] || [ "$job_state" = "Starting" ] || [ "$job_state" = "Restarting" ] || [ "$job_state" = "Scaling" ]; then
+            if [ "$job_state" = "Idle" ] || [ "$job_state" = "Processing" ] || [ "$job_state" = "Degraded" ] || [ "$job_state" = "Starting" ] || [ "$job_state" = "Restarting" ] || [ "$job_state" = "Scaling" ] || [ "$job_state" = "Running" ]; then
                 update="true"
             fi
         elif [ "$action" = "start" ]; then
